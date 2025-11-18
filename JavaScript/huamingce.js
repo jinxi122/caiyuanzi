@@ -13,19 +13,19 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 2,
-            name: "裸睡穿皮鞋",
+            name: "不可爱小鬼",
             title: "副园主",
-            description: "负责团队管理和活动策划",
-            avatar: "img/zhangguonv.png",
+            description: "负责团队管理和活动策划，新手导师，负责帮助新成员快速融入团队",
+            avatar: "img/zhongqiutoxiangnv.png",
             rank: "副社长",
-            tags: ["管理", "副园主"]
+            tags: ["管理", "副园主", "智多星专属"]
         },
         {
             id: 3,
-            name: "不可爱小鬼",
-            title: "智多星专属",
+            name: "裸睡穿皮鞋",
+            title: "长老",
             description: "新手导师，负责帮助新成员快速融入团队",
-            avatar: "img/zhongqiutoxiangnv.png",
+            avatar: "img/zhangguonv.png",
             rank: "长老",
             tags: ["设计", "管理"]
         },
@@ -114,10 +114,10 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 13,
             name: "吾道听风",
             title: "社众",
-            description: "暂时不知道写什么",
+            description: "魔丸降世！！！",
             avatar: "img/toxiang1 (9).png",
             rank: "社众",
-            tags: ["社众","狗"]
+            tags: ["社众", ,"魔丸"]
         },
         {
             id:35,
@@ -333,6 +333,12 @@ document.addEventListener('DOMContentLoaded', function() {
         card.className = 'member-card fade-in-up';
         card.dataset.rank = member.rank;
         
+        // 为id13成员的"魔丸降世"文字添加红色样式
+        let descriptionHtml = member.description;
+        if (member.id === 13) {
+            descriptionHtml = descriptionHtml.replace('魔丸降世', '<span style="color: red;">魔丸降世</span>');
+        }
+        
         card.innerHTML = `
             <div class="member-avatar">
                 <img src="${member.avatar}" alt="${member.name}">
@@ -341,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="member-info">
                 <h3 class="member-name">${member.name}</h3>
                 <p class="member-title">${member.title}</p>
-                <p class="member-description">${member.description}</p>
+                <p class="member-description">${descriptionHtml}</p>
                 <div class="member-tags">
                     ${member.tags.map(tag => `<span class="member-tag">${tag}</span>`).join('')}
                 </div>
