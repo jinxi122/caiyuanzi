@@ -3,15 +3,15 @@
     width: 95%;
     max-width: 1550px;
     height: 660px;
-    margin: 40px auto 60px auto; /* 添加底部间距 */
+    margin: 40px auto 60px auto;
     overflow: hidden;
     position: relative;
-    background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(45, 45, 45, 0.8)); /* 与features区域背景融合 */
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(45, 45, 45, 0.8));
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(212, 175, 55, 0.2);
-    scroll-margin-top: 200px; /* 添加此行以调整跳转位置 */
+    scroll-margin-top: 200px;
 }
 
 /* 轮播图主体样式 */
@@ -19,126 +19,83 @@
     width: 100%;
     height: 100%;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;    
 }
 
-/* 轮播图单张幻灯片样式 - 基础样式 */
+/* 轮播图单张幻灯片样式 */
 .carousel-slide {
     position: absolute;
-    width: 50%;
-    height: 80%;
-    opacity: 0.6;
-    transition: all 0.5s ease-in-out;
-    z-index: 1;
-}
-
-/* 左侧轮播过的图片样式 */
-.carousel-slide.prev {
-    left: 5%;
-    transform: scale(0.85);
-    z-index: 2;
-}
-
-/* 中间轮播中的图片样式 - 放大效果和阴影高光 */
-.carousel-slide.active {
-    left: 25%;
-    opacity: 1;
-    transform: scale(1.2);
-    box-shadow: 
-        0 15px 40px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(255, 255, 255, 0.4) inset;
-    z-index: 100;
-}
-
-/* 右侧等待轮播的图片样式 */
-.carousel-slide.next {
-    left: 45%;
-    transform: scale(0.85);
-    z-index: 2;
-}
-
-/* 轮播图中的图片样式 */
-.carousel-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    border-radius: 4px; /* 圆角效果 */
-    position: relative;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
     z-index: 1;
 }
 
-/* 轮播图按钮基础样式 - 调整层级确保按钮在最上层 */
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 60px;
-    height: 60px;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
-    border: none;
-    border-radius: 50%;
-    font-size: 30px;
-    cursor: pointer;
-    z-index: 200;
-    transition: all 0.3s ease;
+/* 当前活跃的幻灯片样式 */
+.carousel-slide.active {
+    opacity: 1;
+    z-index: 10;
+}
+
+/* 轮播内容布局 - 调整为1:4比例，图片占据更多空间 */
+.carousel-content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+/* 左侧文字区域 - 调整为1/5宽度 */
+.carousel-text {
+    flex: 1;
+    padding: 0 40px 0 60px;
+    color: #fff;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.carousel-text h2 {
+    font-size: 3.2rem;
+    margin-bottom: 25px;
+    color: #d4af37;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.carousel-text p {
+    font-size: 1.6rem;
+    line-height: 1.7;
+    max-width: 100%;
+    color: #f0f0f0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* 右侧图片区域 - 调整为4/5宽度 */
+.carousel-image {
+    flex: 4;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    overflow: hidden;
+    padding-right: 30px;
 }
 
-/* 左按钮位置 */
-.prev-btn {
-    left: 30px;
+.carousel-image img {
+    width: 100%;
+    height: 90%;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    transition: transform 0.8s ease, box-shadow 0.8s ease;
 }
 
-/* 右按钮位置 */
-.next-btn {
-    right: 30px;
-}
-
-/* 按钮悬停效果 */
-.carousel-btn:hover {
-    background-color: white;
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* 引导点容器 */
-.carousel-dots {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 15px;
-    z-index: 200;
-}
-
-/* 引导点样式 - 5个引导点 */
-.carousel-dot {
-    width: 16px;
-    height: 16px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* 活跃的引导点样式 */
-.carousel-dot.active {
-    background-color: white;
-    transform: scale(1.3);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* 引导点悬停效果 */
-.carousel-dot:hover {
-    background-color: rgba(255, 255, 255, 0.8);
+.carousel-slide.active .carousel-image img {
+    transform: scale(1.03);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
 }
 
 /* 响应式调整 */
@@ -146,6 +103,14 @@
     .carousel-container {
         width: 90%;
         height: 600px;
+    }
+    
+    .carousel-text h2 {
+        font-size: 2.8rem;
+    }
+    
+    .carousel-text p {
+        font-size: 1.4rem;
     }
 }
 
@@ -155,129 +120,93 @@
         height: 500px;
     }
     
-    .carousel-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
+    .carousel-text {
+        padding: 0 30px 0 40px;
+    }
+    
+    .carousel-text h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+    
+    .carousel-text p {
+        font-size: 1.3rem;
+    }
+    
+    .carousel-image {
+        padding-right: 20px;
     }
 }
 
 @media (max-width: 768px) {
     .carousel-container {
         width: 100%;
-        height: 280px; /* 调整高度，使比例更合适 */
+        height: auto;
+        min-height: 500px;
         margin: 20px auto 40px auto;
-        border-radius: 10px; /* 减小圆角 */
-        padding: 0 10px; /* 添加内边距，防止内容超出 */
+        border-radius: 10px;
     }
     
-    .carousel {
+    .carousel-content {
+        flex-direction: column;
+        padding: 40px 20px;
+    }
+    
+    .carousel-text {
+        flex: 1;
+        padding: 0 20px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .carousel-text h2 {
+        font-size: 2.2rem;
+    }
+    
+    .carousel-text p {
+        font-size: 1.2rem;
+    }
+    
+    .carousel-image {
+        flex: 1;
         width: 100%;
+        height: 350px;
+        padding-right: 0;
+    }
+    
+    .carousel-image img {
+        width: 90%;
         height: 100%;
-    }
-    
-    .carousel-slide {
-        width: 70%; /* 调整宽度 */
-        height: 70%; /* 调整高度 */
-    }
-    
-    .carousel-slide.prev {
-        left: 5%; /* 调整左侧位置 */
-        transform: scale(0.8); /* 调整缩放比例 */
-        opacity: 0.4; /* 调整透明度 */
-    }
-    
-    .carousel-slide.active {
-        left: 15%; /* 调整中间位置 */
-        transform: scale(1); /* 调整缩放比例 */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* 调整阴影 */
-    }
-    
-    .carousel-slide.next {
-        left: 55%; /* 调整右侧位置 */
-        transform: scale(0.8); /* 调整缩放比例 */
-        opacity: 0.4; /* 调整透明度 */
-    }
-    
-    .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
-    }
-    
-    .prev-btn {
-        left: 10px;
-    }
-    
-    .next-btn {
-        right: 10px;
-    }
-    
-    .carousel-dots {
-        gap: 8px;
-        bottom: 15px;
-    }
-    
-    .carousel-dot {
-        width: 10px;
-        height: 10px;
+        border-radius: 10px;
     }
 }
 
-/* 小屏幕手机优化 */
 @media (max-width: 480px) {
     .carousel-container {
-        width: 100%;
-        height: 220px; /* 调整高度，使比例更合适 */
-        margin: 15px auto 30px auto;
-        border-radius: 8px; /* 减小圆角 */
-        padding: 0 5px; /* 添加内边距，防止内容超出 */
+        min-height: 450px;
     }
     
-    .carousel-slide {
-        width: 75%; /* 调整宽度 */
-        height: 65%; /* 调整高度 */
+    .carousel-content {
+        padding: 30px 15px;
     }
     
-    .carousel-slide.prev {
-        left: 0%; /* 调整左侧位置 */
-        transform: scale(0.7); /* 调整缩放比例 */
-        opacity: 0.3; /* 调整透明度 */
+    .carousel-text {
+        margin-bottom: 20px;
     }
     
-    .carousel-slide.active {
-        left: 12.5%; /* 调整中间位置 */
-        transform: scale(0.9); /* 调整缩放比例 */
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* 调整阴影 */
+    .carousel-text h2 {
+        font-size: 1.9rem;
     }
     
-    .carousel-slide.next {
-        left: 50%; /* 调整右侧位置 */
-        transform: scale(0.7); /* 调整缩放比例 */
-        opacity: 0.3; /* 调整透明度 */
+    .carousel-text p {
+        font-size: 1.1rem;
     }
     
-    .carousel-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 18px;
+    .carousel-image {
+        height: 300px;
     }
     
-    .prev-btn {
-        left: 5px;
-    }
-    
-    .next-btn {
-        right: 5px;
-    }
-    
-    .carousel-dots {
-        gap: 6px;
-        bottom: 10px;
-    }
-    
-    .carousel-dot {
-        width: 8px;
-        height: 8px;
+    .carousel-image img {
+        width: 95%;
     }
 }
