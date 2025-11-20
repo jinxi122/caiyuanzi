@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜園子🥬 - Galgame版本</title>
+    <link rel="stylesheet" href="css/galgame.css">
+    <link rel="stylesheet" href="css/sylbt.css">
+    <style>
+        /* 导航栏样式 - 内联样式避免冲突 */
+        #syszl {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1002;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            height: auto;
+            min-height: 40px;
+        }
+        
+        #syszl h3 {
+            color: #ffffff;
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+            padding: 5px 15px;
+            line-height: 1.2;
+        }
+        
+        #syszl h3:first-child { margin-left: 150px; }
+        #syszl h3:nth-child(2) { margin-left: 800px; }
+        #syszl h3:nth-child(3),
+        #syszl h3:nth-child(4),
+        #syszl h3:nth-child(5) { margin-left: 100px; }
+        
+        #syszl h3 a { 
+            color: inherit;
+            text-decoration: none;
+            display: block;
+            padding: 0;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        
+        #syszl h3 a:hover { color: #d4af37; }
+        /* 对话框可滚动并保留换行，适配长段文本 */
+        .dialogue-text {
+            white-space: pre-wrap;
+            max-height: 240px;
+            overflow-y: auto;
+            padding: 10px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- NOTE: 使用统一的 bgMusic 元素（页面底部定义），移除重复 background-music 元素 -->
+    
+    <!-- 导航栏 -->
+    <nav id="syszl">
+        <h3><a href="index.html">首页</a></h3>
+        <h3><a href="index.html#news">新闻</a></h3>
+        <h3><a href="index.html#join-us">加入我们</a></h3>
+        <h3><a href="caiyuanzi.html">菜園子🥬</a></h3>
+        <h3><a href="huamingce.html">花名册</a></h3>
+    </nav>
+
+    <!-- Galgame游戏区域 -->
+    <div class="galgame-container">
+        <!-- 背景图片层 -->
+        <div id="background-image" class="background-image" style="background-image: url('img/6899f2b2eb6a41d24a84ea1cf2S4JuHj06.png')"></div>
+        
+        <!-- 背景遮罩层 -->
+        <div class="background-overlay"></div>
+        
+        <!-- 场景标题 -->
+        <h1 class="scene-title">菜園子物語</h1>
+        
+        <!-- 进度信息 -->
+        <div class="story-progress">
+            章节: <span id="chapter">1</span> | 
+            好感度: <span id="affection">0</span> | 
+            场景: <span id="scene">1</span>
+        </div>
+        
+        <!-- 角色图片区域 -->
+        <div class="character-area">
+            <img id="character-img" class="character-image" alt="" onerror="handleImageError(this)">
+        </div>
+        <!-- 调试面板（默认隐藏，点击按钮显示） -->
+        <div id="debug-panel" style="display:none;position:fixed;right:10px;bottom:10px;background:rgba(0,0,0,0.6);color:#0f0;padding:8px;border-radius:6px;font-size:12px;z-index:2000;max-width:320px;white-space:pre-wrap;"></div>
+        
+        <!-- 对话框区域 -->
+        <div class="dialogue-area" onclick="nextSentence()">
+            <div id="character-name" class="character-name">系统</div>
+            <div id="dialogue-text" class="dialogue-text">
+                欢迎来到菜園子物語！点击开始游戏。
+            </div>
+            <button id="continue-btn" class="continue-btn" onclick="nextSentence()">继续</button>
+        </div>
+        
+        <!-- 选择按钮区域 -->
+        <div class="choice-area">
+            <div id="choice-buttons" class="choice-buttons">
+                <button class="choice-btn" onclick="showInstructions()">游戏说明</button>
+                <button class="choice-btn" onclick="startGame()">开始游戏</button>
+            </div>
+            <div style="margin-top:10px; font-size:14px; color:#ddd;">
+                <button id="unlock-audio" style="margin-left:10px;padding:6px 10px;">解锁音频</button>
+                <button id="quick-test" style="margin-left:8px;padding:6px 10px;">一键加载扩展剧情并开始</button>
+                <button id="music-toggle" style="margin-left:8px;padding:6px 10px;background:#d4af37;color:#000;">🎵 音乐: 关</button>
+                <button id="sfx-toggle" style="margin-left:8px;padding:6px 10px;background:#888;color:#fff;">🔊 音效: 开</button>
+                <label style="margin-left:8px;color:#ddd;">音量:</label>
+                <input id="music-volume" type="range" min="0" max="1" step="0.01" value="0.7" style="vertical-align:middle;margin-left:6px;">
+                <label style="margin-left:8px;color:#ddd;">SFX音量:</label>
+                <input id="sfx-volume" type="range" min="0" max="1" step="0.01" value="0.85" style="vertical-align:middle;margin-left:6px;">
+                <button id="debug-toggle" style="margin-left:8px;padding:6px 10px;background:#444;color:#fff;">显示调试</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入JavaScript文件 -->
+    <!-- 背景音乐（仅在游戏开始时播放） -->
+    <audio id="bgMusic" src="music/jin.mp3" loop preload="auto"></audio>
+    <script src="JavaScript/galgamewa.js"></script>
+    <script src="JavaScript/galgame.js"></script>
+    
+    <!-- 背景图片管理脚本 -->
+    <script>
+        // 场景背景图片映射 - 已统一为以 toxiang 开头的文件名
+        const backgroundImages = {
+            "系统": {
+                "default": "img/toxiang1 (1).png",
+                "菜园入口": "img/toxiang1 (1).png",
+                "神秘菜园": "img/toxiang1 (2).png"
+            },
+            "白菜精灵 🥬": {
+                "default": "img/toxiang1 (4).png",
+                "白菜园": "img/toxiang1 (4).png",
+                "白菜精灵的家": "img/toxiang1 (5).png"
+            },
+            "胡萝卜战士 🥕": {
+                "default": "img/toxiang1 (6).png",
+                "胡萝卜田": "img/toxiang1 (6).png",
+                "守卫哨所": "img/toxiang1 (8).png"
+            },
+            "其他角色": {
+                "default": "img/toxiang1 (1).png",
+                "菜园中心": "img/toxiang1 (12).png",
+                "神秘区域": "img/toxiang1 (13).png"
+            }
+        };
+
+        // 资产别名映射：把规范名映射到仓库中实际存在的文件名，避免修改二进制资源
+        // 如果你后续将文件重命名到规范名，这里可以删除或反向修改。
+        const assetAlias = {
+            // toxiang 系列（示例映射）
+            'img/toxiang1.png': 'img/toxiang1 (1).png',
+            'img/toxiang2.png': 'img/toxiang1 (2).png',
+            'img/toxiang3.png': 'img/toxiang1 (3).png',
+            'img/toxiang4.png': 'img/toxiang1 (4).png',
+            'img/toxiang5.png': 'img/toxiang1 (5).png',
+            'img/toxiang6.png': 'img/toxiang1 (6).png',
+            'img/toxiang7.png': 'img/toxiang1 (7).png',
+            'img/toxiang8.jpg': 'img/toxiang1 (8).png',
+            'img/toxiang9.jpg': 'img/toxiang1 (9).png',
+            'img/toxiang10.jpg': 'img/toxiang1 (10).png',
+            'img/toxiang11.png': 'img/toxiang1 (11).png',
+            'img/toxiang12.png': 'img/toxiang1 (12).png',
+            'img/toxiang13.png': 'img/toxiang1 (13).png'
+        };
+
+        // 全局解析函数：将传入路径映射到存在的文件（若无别名则原样返回）
+        window.getAsset = function(p) {
+            try {
+                if (!p || typeof p !== 'string') return p;
+                // 先尝试直接别名表
+                if (assetAlias[p]) return assetAlias[p];
+                // 尝试对不带 img/ 前缀的名称进行补齐
+                if (/^toxiang\d+/.test(p)) {
+                    const key = 'img/' + p;
+                    if (assetAlias[key]) return assetAlias[key];
+                }
+                // 否则返回原值（页面上的预加载会处理回退）
+                return p;
+            } catch (e) { return p; }
+        };
+
+        // 场景背景描述映射
+        const sceneBackgrounds = {
+            1: {
+                0: { character: "系统", location: "菜园入口" },
+                1: { character: "白菜精灵 🥬", location: "白菜园" },
+                2: { character: "白菜精灵 🥬", location: "白菜精灵的家" }
+            },
+            2: {
+                0: { character: "胡萝卜战士 🥕", location: "胡萝卜田" },
+                1: { character: "胡萝卜战士 🥕", location: "守卫哨所" }
+            }
+        };
+
+        // 指定用户提供的默认背景图（优先显示）
+        const BG_DEFAULT = 'img/6899f2b2eb6a41d24a84ea1cf2S4JuHj06.png';
+        // 本地存在的回退背景图（仓库中存在的文件）
+        const BG_FALLBACK = 'img/yyslscstx.png';
+
+        // 若图片加载失败则使用回退图（也用于 <img> 的 onerror）
+        function handleImageError(imgEl) {
+            try {
+                if (!imgEl) return;
+                if (imgEl.dataset && imgEl.dataset._errored) return;
+                imgEl.dataset._errored = '1';
+                // 如果这是角色头像元素，使用默认头像回退，否则使用背景回退
+                if (imgEl.id === 'character-img') {
+                    imgEl.src = 'img/toxiang1 (11).png';
+                } else {
+                    imgEl.src = BG_FALLBACK;
+                }
+            } catch (e) { /* ignore */ }
+        }
+
+        // 更新背景图片（带预加载与回退）
+        function updateBackground(chapter, scene) {
+            const bgElement = document.getElementById('background-image');
+            const sceneInfo = sceneBackgrounds[chapter] && sceneBackgrounds[chapter][scene];
+            let bgImage = BG_DEFAULT; // 首选使用用户指定背景
+
+            // 始终使用用户指定的背景，忽略 toxiang 系列映射
+            bgImage = BG_DEFAULT;
+
+            // 添加淡入淡出动画
+            bgElement.style.opacity = '0';
+
+            // 预加载所需背景，若加载失败则使用回退图
+            const testImg = new Image();
+            testImg.onload = () => {
+                setTimeout(() => {
+                    const final = (typeof window.getAsset === 'function') ? window.getAsset(bgImage) : bgImage;
+                    bgElement.style.backgroundImage = `url('${final}')`;
+                    bgElement.style.opacity = '1';
+                }, 300);
+            };
+            testImg.onerror = () => {
+                setTimeout(() => {
+                    bgElement.style.backgroundImage = `url('${BG_FALLBACK}')`;
+                    bgElement.style.opacity = '1';
+                }, 300);
+            };
+            // 触发加载（使用别名解析以防资源名不同）
+            try { testImg.src = (typeof window.getAsset === 'function') ? window.getAsset(bgImage) : bgImage; } catch (e) { testImg.onerror(); }
+        }
+
+        // 修改loadScene函数以包含背景更新
+        const originalLoadScene = window.loadScene;
+        window.loadScene = function() {
+            updateBackground(window.currentChapter, window.currentScene);
+            originalLoadScene();
+        };
+
+        // 初始化背景
+        document.addEventListener('DOMContentLoaded', function() {
+            updateBackground(1, 0);
+        });
+    </script>
+    <!-- 入口限制与AI声明 -->
+    <div id="entry-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:none;align-items:center;justify-content:center;color:#fff;flex-direction:column;">
+        <div style="max-width:720px;padding:20px;text-align:center;">
+            <h2>访问受限</h2>
+            <p>此页面只能通过站内“菜園子”页面的按钮进入。若要返回，请点击下方按钮。</p>
+            <div style="margin-top:16px;"><a href="caiyuanzi.html" style="background:#d4af37;color:#000;padding:10px 18px;border-radius:6px;text-decoration:none;">返回菜園子</a></div>
+        </div>
+    </div>
+
+    <script>
+        // 在页面顶部显示 AI 剧本文案来源声明
+        (function() {
+            const banner = document.createElement('div');
+            banner.style.cssText = 'position:fixed;top:48px;left:0;right:0;background:rgba(0,0,0,0.85);color:#f5f5f5;padding:6px 10px;text-align:center;z-index:1500;font-size:13px;';
+            banner.innerHTML = '剧本/文案由 AI 生成并参考网络素材；如需版权或来源说明，请联系站长。<br/> 音乐是郑润泽的槿，音源是在抖音上找到的伴奏，剧本中的图像来自燕云十六声。';
+            document.body.appendChild(banner);
+
+            // 入口校验：允许来自 caiyuanzi.html 的链接或带 ?from=caiyuanzi 的访问
+            const params = new URLSearchParams(window.location.search);
+            const fromParam = params.get('from');
+            const ref = document.referrer || '';
+            const allowed = (fromParam === 'caiyuanzi') || ref.indexOf('caiyuanzi.html') !== -1;
+
+            if (!allowed) {
+                // 显示遮罩阻止交互
+                const overlay = document.getElementById('entry-overlay');
+                if (overlay) {
+                    overlay.style.display = 'flex';
+                }
+            }
+        })();
+    </script>
+    <script>
+        // 让对话文本中的换行符显示为 HTML 换行，并保持长文本可滚动
+        (function() {
+            const dialog = document.getElementById('dialogue-text');
+            if (!dialog) return;
+
+            // 使用 MutationObserver 监听文本变化，并将文本节点中的换行转为 <br>
+            const observer = new MutationObserver(() => {
+                // 避免重复设置 innerHTML 导致光标/选择丢失，只有在存在换行时替换
+                const raw = dialog.textContent || '';
+                const html = raw.replace(/\n/g, '<br>');
+                if (dialog.innerHTML !== html) {
+                    dialog.innerHTML = html;
+                }
+            });
+
+            observer.observe(dialog, { childList: true, characterData: true, subtree: true });
+
+            // 解锁音频：部分浏览器要求用户手势才能播放音频，点击此按钮执行一次轻量播放以解锁
+            const unlockBtn = document.getElementById('unlock-audio');
+            unlockBtn && unlockBtn.addEventListener('click', () => {
+                try {
+                    // 尝试播放页面上所有 audio 元素（如存在），立即暂停以完成解锁
+                    const audios = document.querySelectorAll('audio');
+                    audios.forEach(a => {
+                        a.play().then(() => a.pause()).catch(() => {});
+                    });
+
+                    // 备用：创建一个短时静音的 AudioContext（某些浏览器需要）
+                    if (window.AudioContext || window.webkitAudioContext) {
+                        const Ctx = window.AudioContext || window.webkitAudioContext;
+                        const ctx = new Ctx();
+                        const o = ctx.createOscillator();
+                        const g = ctx.createGain();
+                        g.gain.value = 0;
+                        o.connect(g); g.connect(ctx.destination);
+                        o.start(0);
+                        setTimeout(() => { o.stop(); ctx.close(); }, 50);
+                    }
+
+                    unlockBtn.textContent = '已解锁';
+                    unlockBtn.disabled = true;
+                    
+                    // 解锁后自动开启音乐
+                    const musicToggle = document.getElementById('music-toggle');
+                    if (musicToggle) {
+                        musicToggle.click();
+                    }
+                } catch (e) {
+                    console.warn('解锁音频时发生错误', e);
+                }
+            });
+
+            // 音乐控制按钮
+            const musicToggle = document.getElementById('music-toggle');
+            musicToggle && musicToggle.addEventListener('click', () => {
+                if (typeof toggleMusic === 'function') {
+                    toggleMusic();
+                }
+            });
+
+            // 音效开关（并在关闭时停止所有正在播放的 sfx）
+            const sfxToggle = document.getElementById('sfx-toggle');
+            sfxToggle && sfxToggle.addEventListener('click', () => {
+                try {
+                    window.sfxEnabled = window.sfxEnabled === false ? true : false;
+                    sfxToggle.textContent = window.sfxEnabled ? '🔊 音效: 开' : '🔇 音效: 关';
+                    sfxToggle.style.background = window.sfxEnabled ? '#888' : '#444';
+                    // 若关闭，则停止所有正在播放的 sfx
+                    if (window.sfxEnabled === false && window.playingSfx) {
+                        try {
+                            Object.keys(window.playingSfx).forEach(p => {
+                                const a = window.playingSfx[p];
+                                try { a.pause(); a.currentTime = 0; } catch (e) {}
+                                try { delete window.playingSfx[p]; } catch (e) {}
+                            });
+                        } catch (e) {}
+                    }
+                } catch (e) { console.warn('切换音效开关失败', e); }
+            });
+
+            // 调试面板切换
+            const debugToggle = document.getElementById('debug-toggle');
+            const debugPanel = document.getElementById('debug-panel');
+            debugToggle && debugToggle.addEventListener('click', () => {
+                if (!debugPanel) return;
+                if (debugPanel.style.display === 'none' || !debugPanel.style.display) {
+                    debugPanel.style.display = 'block';
+                    debugToggle.textContent = '隐藏调试';
+                } else {
+                    debugPanel.style.display = 'none';
+                    debugToggle.textContent = '显示调试';
+                }
+            });
+
+            // 音量滑块（背景音乐）
+            const musicVol = document.getElementById('music-volume');
+            musicVol && musicVol.addEventListener('input', (e) => {
+                try {
+                    const v = parseFloat(e.target.value);
+                    const bg = window.bgMusic || document.getElementById('bgMusic');
+                    if (bg) {
+                        bg.volume = v;
+                        if (typeof setBgOriginalVolume === 'function') setBgOriginalVolume(v);
+                        else window.bgMusicOriginalVolume = v;
+                    }
+                } catch (err) { console.warn('设置音量失败', err); }
+            });
+
+            // SFX 音量滑块（同时调整正在播放的音效）
+            const sfxVol = document.getElementById('sfx-volume');
+            sfxVol && sfxVol.addEventListener('input', (e) => {
+                try {
+                    const v = parseFloat(e.target.value);
+                    window.sfxVolume = v;
+                    // 同步调整当前正在播放的 sfx 实例
+                    try {
+                        const playing = window.playingSfx || {};
+                        Object.keys(playing).forEach(k => {
+                            const a = playing[k];
+                            if (!a) return;
+                            try {
+                                const base = (typeof a._baseVolume === 'number') ? a._baseVolume : 1;
+                                a.volume = Math.max(0, Math.min(1, base * v));
+                            } catch (e) {}
+                        });
+                    } catch (e) {}
+                } catch (err) { console.warn('设置 sfx 音量失败', err); }
+            });
+
+            // 快速测试按钮：直接切换到第1章第0场景并开始（便于本地验证）
+            const quickTestBtn = document.getElementById('quick-test');
+            quickTestBtn && quickTestBtn.addEventListener('click', () => {
+                try {
+                    if (typeof startGame === 'function') {
+                        startGame();
+                        // 同时确保背景音乐被开启（若尚未开启）
+                        try {
+                            if (window.musicEnabled !== true && typeof toggleMusic === 'function') {
+                                toggleMusic();
+                            }
+                        } catch (e) { console.warn('快速测试启动音乐时出错', e); }
+
+                        // 确保场景背景被更新（如果 loadScene 重写后，background 更新会触发）
+                        if (typeof updateBackground === 'function') updateBackground(window.currentChapter || 1, window.currentScene || 0);
+                    } else {
+                        console.warn('startGame 未定义');
+                    }
+                } catch (e) {
+                    console.error('快速测试出错', e);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -44,11 +44,11 @@
             <div class="carousel-slide active">
                 <div class="carousel-content">
                     <div class="carousel-text">
-                        <h2 style="color: darkkhaki;">曹国雄</h2>
-                        <p>不知道写什么了</p>
+                        <h2 style="color: darkkhaki;">你好</h2>
+                        <p>请你吃狗粮</p>
                     </div>
                     <div class="carousel-image">
-                        <img src="img/20251118141232.png" alt="轮播图片1">
+                        <img src="img/fengshu.png" alt="轮播图片1">
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                     <div class="news-content">
-                        <div class="news-date">2025-10-9</div>
+                        <div class="news-date" id="news-date-1"></div>
                         <h3>百业公告</h3>
                         <p>最新百业公告已发布，请各位侠士及时查看，了解最新动态和活动信息。</p>
                         <a href="#" class="read-more">阅读更多 →</a>
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="news-content">
-                        <div class="news-date">2025-10-9</div>
+                        <div class="news-date" id="news-date-2"></div>
                         <h3>百业活动开启</h3>
                         <p>百业活动现已全面开启，参与活动可获得丰厚奖励，提升百业技能等级。</p>
                         <a href="#" class="read-more">阅读更多 →</a>
@@ -160,7 +160,7 @@
                         </div>
                     </div>
                     <div class="news-content">
-                        <div class="news-date">2025-10-9</div>
+                        <div class="news-date" id="news-date-3"></div>
                         <h3>百业新功能上线</h3>
                         <p>百业系统新增多项功能，优化用户体验，带来更加丰富的游戏内容。</p>
                         <a href="#" class="read-more">阅读更多 →</a>
@@ -208,6 +208,22 @@
     </div>
 
     <script>
+    // 实时日期更新功能
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取当前日期
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // 月份从0开始，所以+1
+        const day = String(today.getDate()).padStart(2, '0');
+        const currentDate = `${year}-${month}-${day}`;
+        
+        // 更新所有新闻日期
+        const newsDateElements = document.querySelectorAll('.news-date');
+        newsDateElements.forEach(element => {
+            element.textContent = currentDate;
+        });
+    });
+    
     (function(){
         // 点击新闻卡打开模态并显示 overlay 文本
         const cards = document.querySelectorAll('.news-card');
@@ -262,6 +278,19 @@
         });
     })();
     </script>
+
+    <!-- 网站底部声明 -->
+    <footer style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white; padding: 20px 0; margin-top: 40px; border-top: 3px solid #e74c3c;">
+        <div class="container">
+            <div style="text-align: center; line-height: 1.8; font-size: 14px;">
+                <p><strong style="color: #f39c12; font-size: 50px;">网站声明：</strong></p>
+                <p>本网站为玩家<strong style="color: #e74c3c;">自创作品</strong>，包含AI生成内容，仅供娱乐交流使用，百业网站开发者是不定期更新，不保证内容的准确性和及时性</p>
+                <p><strong style="color: #f39c12;">郑重声明：</strong>本站<strong style="color: #e74c3c;">不接广告、不商用、不卖货</strong>，如有广告请你不要点击，部分广告可能是浏览器所产生的。这网页仅用于玩家记录分享</p>
+                <p><strong style="color: #f39c12;">再次声明：</strong>本站<strong style="color: #e74c3c;">不含任何广告内容</strong>，所有内容均为玩家原创或AI辅助创作</p>
+                <p style="margin-top: 15px; font-size: 12px; color: #bdc3c7;">© 2025 菜園子玩家百业 - </p>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
