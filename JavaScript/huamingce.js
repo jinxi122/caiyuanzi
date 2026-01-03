@@ -4,21 +4,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const members = [
         {
             id: 1,
-            name: "风诉思慕",
+            name: "不可爱小鬼",
             title: "社主",
             description: "菜園子🥬的创始人，",
-            avatar: "img/zhongqiutoxiangnan.png",
+            avatar: "img/zhongqiutoxiangnv.png",
             rank: "社主",
             tags: ["管理", "开发", "策划"]
         },
         {
             id: 2,
-            name: "不可爱小鬼",
+            name: "重西",
             title: "副园主",
             description: "负责团队管理和活动策划，新手导师，负责帮助新成员快速融入团队",
-            avatar: "img/zhongqiutoxiangnv.png",
+            avatar: "img/zhangguonv.png",
             rank: "副社长",
-            tags: ["管理", "副园主", "智多星专属"]
+            tags: ["管理", "副园主", ""]
         },
         {
             id: 3,
@@ -77,18 +77,18 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 9,
             name: "曹国雄",
-            title: "新晋成员",
-            description: "网站编辑师",
-            avatar: "img/luohua.png",
+            title: "熊",
+            description: "不懂哦，躺平就是了",
+            avatar: "img/sanye.png",
             rank: "社众",
             tags: ["萌新", "需要帮助", "熊"]
         },
         {
             id: 10,
-            name: "艾鹿绘梨衣",
-            title: "社众",
-            description: "目压一切的一切",
-            avatar: "img/toxiang1 (7).png",
+            name: "空位",
+            title: "空位",
+            description: "空位",
+            avatar: "",
             rank: "社众",
             tags: ["社众"]
         },
