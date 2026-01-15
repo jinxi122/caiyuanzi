@@ -1,0 +1,423 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 通用容器样式 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* 通用标题样式 */
+.section-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 60px;
+    color: #d4af37;
+}
+
+/* 英雄区域 */
+.hero {
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://via.placeholder.com/1920x1080') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.hero-content {
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    animation: fadeInUp 1s ease;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    animation: fadeInUp 1s ease 0.3s both;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 15px 40px;
+    background: linear-gradient(45deg, #d4af37, #f4e4bc);
+    color: #000;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    animation: fadeInUp 1s ease 0.6s both;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+}
+
+/* 视频展示区域 */
+.video-section {
+    padding: 200px 0;   /* 增加上下间距 */
+    background: #000;   /* 保持背景为黑色 */
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.video-placeholder {
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    position: relative;
+    background: #000;
+}
+
+.video-placeholder video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 加入我们部分 - 简化版 */
+.join-us {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #fff;
+}
+
+.join-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.join-content p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.join-content ul {
+    list-style-type: none;
+    margin: 30px 0;
+}
+
+.join-content li {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.join-content li:before {
+    content: "✓";
+    color: #d4af37;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* 动画 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.2rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 40px;
+    }
+    
+    .video-section {
+        padding: 100px 0;
+    }
+    
+    .cta-button {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+    
+    .join-us {
+        padding: 60px 0;
+    }
+    
+    .join-content p {
+        font-size: 1.1rem;
+    }
+}
+
+/* 小屏幕手机优化 */
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+    
+    .cta-button {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+    
+    .video-section {
+        padding: 80px 0;
+    }
+    
+    .join-us {
+        padding: 50px 0;
+    }
+    
+    .join-content p {
+        font-size: 1rem;
+    }
+    
+    .join-content li {
+        font-size: 1rem;
+    }
+}
+
+/* ===== 百业公告悬浮覆盖层 & 弹窗样式 ===== */
+.news-card {
+    position: relative;
+    overflow: hidden;
+}
+.news-image {
+    position: relative;
+}
+.news-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.4s ease;
+}
+.news-card:hover .news-image img {
+    transform: scale(1.03);
+}
+.news-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 60%);
+    padding: 14px 18px;
+    pointer-events: none; /* 由 card 处理点击 */
+}
+.overlay-text {
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.5;
+    max-height: 0;
+    transform: translateY(18px);
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease, max-height 0.35s ease;
+    white-space: pre-line; /* 保持换行 */
+}
+.news-card:hover .overlay-text {
+    max-height: 220px; /* 展开显示 */
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 当悬浮显示覆盖层时，原来的新闻文字向下移动并稍微变淡 */
+.news-content {
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    transform: translateY(0);
+    opacity: 1;
+}
+.news-card:hover .news-content {
+    transform: translateY(18px);
+    opacity: 0.92;
+}
+
+/* 弹窗（模态框） */
+.modal-backdrop {
+    position: fixed;
+    left: 0; top: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.2); /* 保持遮罩透明度 */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+.modal-backdrop.show {
+    display: flex;
+}
+.modal-window {
+    width: 90%; /* 保持宽度 */
+    max-width: 800px; /* 保持最大宽度 */
+    background: rgba(30,30,30,0.75); /* 保持深色半透明背景 */
+    border-radius: 14px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.45);
+    padding: 25px 30px; /* 保持内边距 */
+    transform: translateY(26px) scale(0.985);
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    display: flex;
+    flex-direction: column;
+}
+.modal-backdrop.show .modal-window {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+.modal-close {
+    position: absolute;
+    right: 18px;
+    top: 12px;
+    background: transparent;
+    border: none;
+    font-size: 20px; /* 保持关闭按钮大小 */
+    color: #fff; /* 保持白色 */
+    cursor: pointer;
+    z-index: 10;
+}
+.modal-content-wrapper {
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+}
+.modal-content {
+    color: #fff; /* 保持白色文字 */
+    font-size: 18px; /* 保持文字大小 */
+    line-height: 1.8; /* 保持行高 */
+    white-space: pre-line;
+    flex: 1;
+    padding-right: 20px;
+}
+.modal-image {
+    width: 200px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* 响应式设计 - 小屏幕时图片在下方 */
+@media (max-width: 768px) {
+    .modal-content-wrapper {
+        flex-direction: column;
+    }
+    .modal-content {
+        padding-right: 0;
+        margin-bottom: 15px;  /* 底部间距 */
+    }
+    .modal-image {
+        width: 100%;   /* 宽度占满 */
+        max-width: 300px;  /* 最大宽度 */
+        margin: 0 auto;
+    }
+}
+
+
+/* 彩蛋按钮配色 */
+#caidanMusicBtn {
+    background: linear-gradient(90deg,#ff69b4,#ff9ac8);
+    border: none;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+#caidanMusicBtn:active { transform: translateY(1px); }
+
+/* 加入我们部分ID信息样式 */
+#jiaru {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    text-align: center; /* 居中对齐 */
+    max-width: 100%; /* 确保不会超出容器 */
+    box-sizing: border-box; /* 包含内边距在宽度内 */
+}
+
+#jiaru span {
+    color: rgb(251, 255, 0);
+    font-weight: bold;
+}
+
+/* 响应式设计 - 加入我们部分 */
+@media (max-width: 768px) {
+    #jiaru {
+        font-size: 1.1rem;
+        padding: 12px;
+        margin: 15px 0;
+    }
+}
+
+/* 小屏幕手机优化 - 加入我们部分 */
+@media (max-width: 480px) {
+    #jiaru {
+        font-size: 1rem;
+        padding: 10px;
+        margin: 10px 0;
+        line-height: 1.6;
+    }
+    
+    /* 确保ID信息在小屏幕上不会超出容器 */
+    .join-content {
+        padding: 0 10px;
+        overflow-x: hidden;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}

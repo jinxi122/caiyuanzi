@@ -1,0 +1,134 @@
+/* 新闻动态区域 */
+.news {
+    padding: 80px 0;  
+    background: linear-gradient(135deg, #2d2d2d, #1a1a1a);  /* 与视频区域背景融合 */
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.news-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    width: 100%;
+    max-width: 100%;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    border-color: #d4af37;
+}
+
+.news-image {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(45deg, #444, #666);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4af37;
+    overflow: hidden; /* 添加溢出隐藏，确保图片不会超出容器 */
+}
+
+.news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 使用cover确保图片覆盖整个区域，同时保持比例 */
+    transition: transform 0.3s ease; /* 添加过渡效果 */
+}
+
+.news-card:hover .news-image img {
+    transform: scale(1.05); /* 鼠标悬停时图片轻微放大 */
+}
+
+.news-content {
+    padding: 25px;
+}
+
+.news-date {
+    color: #d4af37;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.news-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.news-card p {
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.read-more {
+    color: #d4af37;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.read-more:hover {
+    color: #f4e4bc;
+}
+
+/* 新闻响应式设计 */
+@media (max-width: 768px) {
+    .news-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 0 10px;
+    }
+    
+    .news {
+        padding: 60px 0;
+    }
+    
+    .news-card {
+        margin-bottom: 20px;
+    }
+    
+    .news-image {
+        height: 180px; /* 在小屏幕上稍微减小图片高度 */
+    }
+}
+
+/* 小屏幕手机优化 */
+@media (max-width: 480px) {
+    .news-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 0 5px;
+    }
+    
+    .news-content {
+        padding: 15px;
+    }
+    
+    .news-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .news {
+        padding: 40px 0;
+    }
+    
+    .news-card {
+        border-radius: 10px;
+    }
+    
+    .news-image {
+        height: 150px;
+    }
+}

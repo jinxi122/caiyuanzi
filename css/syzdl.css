@@ -1,0 +1,145 @@
+/* 基础样式 */
+body {
+    font-family: 'Microsoft YaHei', sans-serif;
+    background-color: #000;
+    color: #fff;
+    overflow-x: hidden;
+    padding-top: 50px; /* 减少padding-top，消除多余黑色区域 */
+    margin: 0;
+}
+
+/* 解决手机界面看不完整的问题 */
+body.no-overflow {
+    overflow: hidden;
+}
+
+/* 导航栏样式 */
+#syszl {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1002;
+    padding: 8px 0; /* 进一步调低高度 */
+    transition: all 0.3s ease;
+    display: flex;
+    height: auto; /* 确保高度自动 */
+    min-height: 40px; /* 设置最小高度 */
+}
+
+#syszl.scrolled {
+    background: rgba(0, 0, 0, 0.95);
+    padding: 6px 0; /* 滚动状态也相应调低 */
+}
+
+#syszl h3 {
+    color: #ffffff; /* 默认白色 */
+    margin: 0; /* 重置所有margin */
+    cursor: pointer;  /* 鼠标悬停时显示为指针 */
+    font-weight: normal; /* 默认字体重量为正常 */
+    padding: 5px 15px; /* 调整内边距 */
+    line-height: 1.2; /* 调整行高 */
+}
+
+/* 恢复之前的固定间距设置 */
+#syszl h3:first-child {
+    margin-left: 150px; /* 首项左距150px */
+}
+
+#syszl h3:nth-child(2) {
+    margin-left: 800px; /* 第二项左距800px */
+}
+
+#syszl h3:nth-child(3),
+#syszl h3:nth-child(4),
+#syszl h3:nth-child(5) {
+    margin-left: 100px; /* 第三项及以后左距100px */
+}
+
+#syszl h3.active {    
+   color: #ffd600; /* 选中时的颜色 */
+}
+
+#syszl h3:hover {
+    color: #ffd600; /* 鼠标悬停时的颜色 */
+}
+
+#syszl h3 a { 
+    color: inherit; /* 继承父元素颜色 */
+    text-decoration: none; /* 去掉下划线 */
+    display: block; /* 使链接占满整个h3区域 */
+    padding: 0; /* 去掉默认内边距 */
+    font-size: 16px;
+    transition: color 0.3s ease;
+    line-height: 1.2; /* 调整行高 */
+}
+
+#syszl h3 a:hover {
+    color: #d4af37;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    #syszl h3:first-child {
+        margin-left: 100px; /* 减小首项左距 */
+    }
+    
+    #syszl h3:nth-child(2) {
+        margin-left: 500px; /* 减小第二项左距 */
+    }
+    
+    #syszl h3:nth-child(3),
+    #syszl h3:nth-child(4),
+    #syszl h3:nth-child(5) {
+        margin-left: 80px; /* 减小其他项左距 */
+    }
+}
+
+@media (max-width: 768px) {
+    #syszl {
+        flex-wrap: wrap;
+        justify-content: center; /* 居中显示 */
+        padding: 10px 0; /* 增加垂直空间 */
+        min-height: auto; /* 自动高度 */
+        height: auto; /* 自动高度 */
+    }
+    
+    #syszl h3 {
+        padding: 8px 12px;
+        font-size: 14px;
+        margin: 5px !important; /* 统一间距 */
+        line-height: 1.1; /* 移动端行高 */
+    }
+    
+    body {
+        padding-top: 80px; /* 增加顶部空间，因为导航栏变高了 */
+    }
+    
+    /* 修复手机界面游戏部分看不完整的问题 */
+    body.no-overflow {
+        overflow-y: auto; /* 允许垂直滚动 */
+    }
+}
+
+/* 小屏幕手机优化 */
+@media (max-width: 480px) {
+    #syszl {
+        padding: 8px 0;
+    }
+    
+    #syszl h3 {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin: 3px !important;
+    }
+    
+    body {
+        padding-top: 70px;
+    }
+    
+    /* 修复小屏幕手机界面游戏部分看不完整的问题 */
+    body.no-overflow {
+        overflow-y: auto; /* 允许垂直滚动 */
+    }
+}
